@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import QrCodeVue from 'qrcode.vue'
-import { Field } from '@ark-ui/vue'
+import { watchDebounced } from '@vueuse/core'
 
 const qrValue = ref('https://qrcodegenerator.tech')
 const aqSize = ref(150)
@@ -36,6 +36,12 @@ const download = () => {
     xhr.open('GET', canvasImage);
     xhr.send();
 }
+
+watchDebounced(
+    textInput,
+    () => generate(),
+    { debounce: 500, maxWait: 1000 }
+)
 </script>
 <template>
     <div class="mt-[2rem]">
@@ -53,17 +59,10 @@ const download = () => {
                 :class="{
                     'outline-red-500 outline': inputEmpty
                 }"
-                @keyup.meta.enter="generate()"
                 class="border-gray-100 border block p-[0.25rem] w-full min-h-[5rem] text-sm leading-tight"
             >
             </textarea>
             <div class="flex items-center gap-[1rem] justify-center mt-[1rem]">
-                <button
-                    @click.prevent="generate()"
-                    class="bg-blue-700 text-white font-bold px-[1rem] py-[0.5rem] rounded-[0.25rem] hover:bg-blue-600 transition-all duration-500 ease-in-out"
-                >
-                    Generate
-                </button>
                 <button
                     @click.prevent="download()"
                     class="bg-green-700 hover:bg-green-600 transition-all duration-500 ease-in-out text-white font-bold px-[1rem] py-[0.5rem] rounded-[0.25rem]"
