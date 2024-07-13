@@ -68,8 +68,8 @@ const changeType = (type) => {
 }
 </script>
 <template>
-    <div class="mt-[2rem]">
-        <div class="pb-[1rem]">
+    <div class="mt-[3rem]">
+        <div>
             <QrCodeVue
                 :value="qrValue"
                 class="border border-gray-200 rounded-md overflow-hidden p-[0.5rem] mx-auto"
@@ -77,7 +77,7 @@ const changeType = (type) => {
                 id="qr-code-canvas"
             ></QrCodeVue>
         </div>
-        <div class="mt-[2rem]">
+        <div class="mt-[3rem]">
             <div class="flex items-center gap-[0.5rem] text-[14px] px-[1rem]">
                 <button
                     v-for="type in types"
