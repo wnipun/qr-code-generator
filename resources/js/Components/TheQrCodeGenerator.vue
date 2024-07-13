@@ -44,7 +44,7 @@ const download = () => {
     xhr.onload = function () {
         let a = document.createElement('a');
         a.href = window.URL.createObjectURL(xhr.response);
-        a.download = 'qr_code.png';
+        a.download = `qr_code_${qrSettingsStore.qrSize[0]}.png`;
         a.style.display = 'none';
         document.body.appendChild(a);
         a.click();
