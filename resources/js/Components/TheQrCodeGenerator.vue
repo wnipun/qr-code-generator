@@ -2,10 +2,12 @@
 import { onMounted, ref } from 'vue'
 import QrCodeVue from 'qrcode.vue'
 import { watchDebounced } from '@vueuse/core'
+import DownloadButton from './Buttons/DownloadButton.vue'
+import { Tabs } from '@ark-ui/vue'
 
 const qrValue = ref('https://qrcodegenerator.tech')
 const aqSize = ref(150)
-const textInput = ref('https://qrcodegenerator.tech')
+const textInput = ref('')
 const inputEmpty = ref(false)
 const types = ref([
     {
@@ -17,6 +19,8 @@ const types = ref([
         placeholder: 'Enter website url'
     },
 ])
+
+const selectedTab = ref('Text')
 const selectedType = ref({})
 
 const generate = () => {
@@ -60,6 +64,7 @@ onMounted(() => {
 
 const changeType = (type) => {
     selectedType.value = type
+    selectedTab.value = type.title
 }
 </script>
 <template>
@@ -80,31 +85,35 @@ const changeType = (type) => {
                     v-text="type.title"
                     class="font-bold text-center uppercase rounded-full px-[1rem] py-[0.5rem] leading-tight text-[12px]"
                     :class="{
-                        'text-green bg-green-honeydew': selectedType.title != type.title,
-                        'text-white bg-green': selectedType.title == type.title
+                        'text-green bg-green-honeydew': selectedTab != type.title,
+                        'text-white bg-green': selectedTab == type.title
                     }"
                     @click.prevent="changeType(type)"
                 ></button>
             </div>
             <div class="transition-all duration-500 ease-in-out px-[1rem] mb-[1.5rem]">
-                <Transition>
-                    <textarea
-                        v-if="selectedType.title == 'Text'"
-                        v-model="textInput"
-                        class="block w-full min-h-[5rem] text-base leading-tight p-[0.75rem] mt-[1.5rem] border-2 border-gray-200 rounded-[8px] text-black-charcoal"
-                        :placeholder="selectedType.placeholder"
-                    >
-                    </textarea>
-                    <input v-else v-model="textInput" :placeholder="selectedType.placeholder" class="w-full text-base leading-tight p-[0.75rem] mt-[1rem] border-2 border-gray-200 rounded-[8px] text-black-charcoal"/>
-                </Transition>
+                <Tabs.Root v-model="selectedTab">
+                    <Tabs.Content value="Text">
+                        <textarea
+                            v-model="textInput"
+                            class="block w-full min-h-[5rem] text-base leading-tight p-[0.75rem] mt-[1.5rem] border-2 border-gray-200 rounded-[8px] text-black-charcoal"
+                            :placeholder="selectedType.placeholder"
+                        >
+                        </textarea>
+                    </Tabs.Content>
+                    <Tabs.Content value="Url">
+                        <input
+                            v-model="textInput"
+                            :placeholder="selectedType.placeholder"
+                            class="w-full text-base leading-tight p-[0.75rem] mt-[1rem] border-2 border-gray-200 rounded-[8px] text-black-charcoal"
+                            type="url"
+                        />
+                    </Tabs.Content>
+                </Tabs.Root>
+
             </div>
             <div class="flex items-center gap-[1rem] justify-center px-[1rem] pb-[1rem]">
-                <button
-                    @click.prevent="download()"
-                    class="bg-green hover:bg-green-600 transition-all duration-500 ease-in-out text-white font-bold px-[1rem] py-[1rem] rounded-[4px] w-full"
-                >
-                    Download
-                </button>
+                <DownloadButton @click.prevent="download()" />
             </div>
         </div>
     </div>
