@@ -1,9 +1,8 @@
 <script setup>
 import { onMounted, ref } from 'vue'
-import { Cog6ToothIcon } from '@heroicons/vue/24/outline'
-import { XMarkIcon } from '@heroicons/vue/24/outline'
+import { Cog6ToothIcon, XMarkIcon, ChevronDownIcon } from '@heroicons/vue/24/outline'
 import { useQrSettingsStore } from '../Stores/QrSettingsStore.js'
-import { Slider } from '@ark-ui/vue'
+import { Slider, Select } from '@ark-ui/vue'
 
 const mounted = ref(false)
 const qrSettingsStore = useQrSettingsStore()
@@ -42,7 +41,7 @@ const qrSizeOnChange = (newValue) => {
 
             <Slider.Root
                 :model-value="qrSettingsStore.qrSize"
-                class="qs_slider mb-[3rem] block"
+                class="ark_slider mb-[3rem] block"
                 :min="100"
                 :max="448"
                 @value-change-end="(details) => qrSizeOnChange(details)"
@@ -67,6 +66,27 @@ const qrSizeOnChange = (newValue) => {
                 </slider.MarkerGroup>
             </Slider.Root>
 
+            <Select.Root class="ark-select" :items="['L', 'M', 'Q', 'H']" v-model="qrSettingsStore.qrErrorCorrection">
+                <Select.Label>Error Correction Level</Select.Label>
+                <Select.Control>
+                    <Select.Trigger>
+                        <Select.ValueText placeholder="Select error correction level"/>
+                        <Select.Indicator>
+                            <ChevronDownIcon/>
+                        </Select.Indicator>
+                    </Select.Trigger>
+                </Select.Control>
+                <Teleport to="body">
+                    <Select.Positioner class="ark-select">
+                        <Select.Content>
+                            <Select.Item v-for="item in ['L', 'M', 'Q', 'H']" :key="item" :item="item">
+                                <Select.ItemText>{{ item }}</Select.ItemText>
+                            </Select.Item>
+                        </Select.Content>
+                    </Select.Positioner>
+                </Teleport>
+            </Select.Root>
+
             <div class="flex items-center justify-end pt-[1rem]">
                 <button
                     @click.prevent="qrSettingsStore.fnReset()"
@@ -77,7 +97,7 @@ const qrSizeOnChange = (newValue) => {
     </Teleport>
 </template>
 <style scoped>
-.qs_slider {
+.ark_slider {
     [data-scope="slider"][data-part="label"] {
         @apply text-black-charcoal text-[14px];
     }
@@ -92,6 +112,40 @@ const qrSizeOnChange = (newValue) => {
 
     [data-scope="slider"][data-part="marker"] {
         @apply text-[12px] text-black-charcoal mt-[0.5rem];
+    }
+}
+
+.ark-select {
+    [data-scope="select"][data-part="label"] {
+        @apply text-black-charcoal text-[14px];
+    }
+
+    [data-scope="select"][data-part="control"] {
+        @apply text-black-charcoal text-[14px] border border-green rounded-[8px] mt-[0.5rem];
+    }
+
+    [data-scope="select"][data-part="trigger"] {
+        @apply w-full text-left px-[1rem] relative py-[0.75rem];
+    }
+
+    [data-scope="select"][data-part="indicator"] {
+        @apply absolute right-0 top-0 w-[1rem] h-full flex items-center mr-[0.5rem];
+
+        svg {
+            @apply w-[1.5rem] h-[1.5rem] text-green;
+        }
+    }
+
+    [data-scope="select"][data-part="content"] {
+        @apply bg-green-honeydew w-full min-w-[5rem] rounded-[8px] overflow-hidden py-[0.25rem];
+    }
+
+    [data-scope="select"][data-part="item"] {
+        @apply text-[14px] text-black-charcoal cursor-pointer px-[0.5rem] font-semibold text-green;
+
+        &:hover {
+            @apply bg-green text-white;
+        }
     }
 }
 </style>
