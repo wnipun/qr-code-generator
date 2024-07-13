@@ -5,7 +5,10 @@
         :sitename="false"
     />
 
-    <x-container class="text-center bg-white max-w-lg rounded-[8px] mt-[2rem]">
+    <x-container
+        id="home-container"
+        class="text-center bg-white max-w-lg rounded-[8px] mt-[2rem] relative overflow-hidden"
+    >
         <header class="text-left px-[1rem] pt-[1rem]">
             <span class="font-semibold">QR Code Generator</span>
             <h1 class="font-primary text-black-charcoal text-[12px] leading-6">Generate QR codes using this free online generator</h1>

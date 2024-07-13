@@ -4,9 +4,11 @@ import QrCodeVue from 'qrcode.vue'
 import { watchDebounced } from '@vueuse/core'
 import DownloadButton from './Buttons/DownloadButton.vue'
 import { Tabs } from '@ark-ui/vue'
+import QrSettings from './QrSettings.vue'
+import { useQrSettingsStore } from '../Stores/QrSettingsStore.js'
 
+const qrSettingsStore = useQrSettingsStore()
 const qrValue = ref('https://qrcodegenerator.tech')
-const aqSize = ref(150)
 const textInput = ref('')
 const inputEmpty = ref(false)
 const types = ref([
@@ -42,7 +44,7 @@ const download = () => {
     xhr.onload = function () {
         let a = document.createElement('a');
         a.href = window.URL.createObjectURL(xhr.response);
-        a.download = 'qrcode.png';
+        a.download = 'qr_code.png';
         a.style.display = 'none';
         document.body.appendChild(a);
         a.click();
@@ -69,11 +71,13 @@ const changeType = (type) => {
 </script>
 <template>
     <div class="mt-[3rem]">
+        <QrSettings />
+
         <div>
             <QrCodeVue
                 :value="qrValue"
                 class="border border-gray-200 rounded-md overflow-hidden p-[0.5rem] mx-auto"
-                :size="aqSize"
+                :size="qrSettingsStore.qrSize[0]"
                 id="qr-code-canvas"
             ></QrCodeVue>
         </div>
