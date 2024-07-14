@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { useStorage } from '@vueuse/core'
 
 export const useQrSettingsStore = defineStore('qrSettingsStore', () => {
-    const open = ref(true)
+    const open = ref(false)
     const qrSize = useStorage('qr-size', [150])
     const qrErrorCorrection = useStorage('qr-error-correction', ['H'])
     const qrBackgroundColor = useStorage('qr-background-color', '#ffffff')
