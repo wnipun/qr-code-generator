@@ -2,5 +2,12 @@
     "name": "QR Code Generator",
     "short_name": "QR Generator",
     "background_color": "#fff",
-    "description": "Quick QR code generator app."
+    "description": "Quick QR code generator app.",
+    "icons": [
+        {
+            "src": "app-icon.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        }
+    ]
 }
