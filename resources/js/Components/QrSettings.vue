@@ -87,6 +87,44 @@ const qrSizeOnChange = (newValue) => {
                 </Teleport>
             </Select.Root>
 
+            <div class="mt-[1rem] flex items-center gap-[1rem]">
+                <div>
+                    <label for="background" class="text-black-charcoal text-[14px]">Background</label>
+                    <div class="block relative mt-[0.5rem]">
+                        <input
+                            id="background"
+                            v-model="qrSettingsStore.qrBackgroundColor"
+                            type="text"
+                            class="block text-black-charcoal text-[14px] border border-green rounded-[8px] py-[12px] px-[1rem] w-full"
+                        >
+                        <span class="absolute right-0 top-0 w-[1rem] h-full flex items-center mr-[0.5rem]">
+                            <div
+                                :style="`background: ${qrSettingsStore.qrBackgroundColor};`"
+                                class="w-[1rem] h-[1rem] rounded-full border-none appearance-none pointer-events-none ring-1 ring-gray-200"
+                            ></div>
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <label for="foreground" class="text-black-charcoal text-[14px]">Foreground</label>
+                    <div class="block relative mt-[0.5rem]">
+                        <input
+                            id="foreground"
+                            v-model="qrSettingsStore.qrForegroundColor"
+                            type="text"
+                            class="block text-black-charcoal text-[14px] border border-green rounded-[8px] py-[12px] px-[1rem] w-full"
+                        >
+                        <span class="absolute right-0 top-0 w-[1rem] h-full flex items-center mr-[0.5rem]">
+                            <div
+                                :style="`background: ${qrSettingsStore.qrForegroundColor};`"
+                                class="w-[1rem] h-[1rem] rounded-full border-none appearance-none pointer-events-none ring-1 ring-gray-200"
+                            ></div>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+
             <div class="flex items-center justify-end pt-[1rem]">
                 <button
                     @click.prevent="qrSettingsStore.fnReset()"

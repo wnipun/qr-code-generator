@@ -87,6 +87,8 @@ const changeType = (type) => {
                     class="border border-gray-200 rounded-md overflow-hidden p-[0.5rem] mx-auto"
                     :size="qrSettingsStore.qrSize[0]"
                     :level="qrSettingsStore.qrErrorCorrection[0]"
+                    :background="qrSettingsStore.qrBackgroundColor"
+                    :foreground="qrSettingsStore.qrForegroundColor"
                     id="qr-code-canvas"
                 ></QrCodeVue>
             </ErrorBoundary>
