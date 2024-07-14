@@ -1,14 +1,17 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import QrCodeVue from 'qrcode.vue'
-import { watchDebounced } from '@vueuse/core'
 import DownloadButton from './Buttons/DownloadButton.vue'
-import { Tabs } from '@ark-ui/vue'
 import QrSettings from './QrSettings.vue'
+import ErrorBoundary from './ErrorBoundary.vue'
 import { useQrSettingsStore } from '../Stores/QrSettingsStore.js'
+import { watchDebounced } from '@vueuse/core'
+import { Tabs } from '@ark-ui/vue'
 
 const qrSettingsStore = useQrSettingsStore()
 const qrValue = ref('https://qrcodegenerator.tech')
+const qrError = ref(null)
+
 const textInput = ref('')
 const inputEmpty = ref(false)
 const types = ref([
@@ -30,14 +33,18 @@ const generate = () => {
 
     if (textInput.value == '') {
         inputEmpty.value = true
-        console.log('empty');
         return
     }
 
     qrValue.value = textInput.value
+    qrError.value = null
 }
 
 const download = () => {
+    if (qrError.value != null) {
+        return
+    }
+
     let canvasImage = document.getElementById('qr-code-canvas').toDataURL('image/png');
     let xhr = new XMLHttpRequest();
     xhr.responseType = 'blob';
@@ -74,13 +81,15 @@ const changeType = (type) => {
         <QrSettings />
 
         <div>
-            <QrCodeVue
-                :value="qrValue"
-                class="border border-gray-200 rounded-md overflow-hidden p-[0.5rem] mx-auto"
-                :size="qrSettingsStore.qrSize[0]"
-                :level="qrSettingsStore.qrErrorCorrection[0]"
-                id="qr-code-canvas"
-            ></QrCodeVue>
+            <ErrorBoundary v-model="qrError">
+                <QrCodeVue
+                    :value="qrValue"
+                    class="border border-gray-200 rounded-md overflow-hidden p-[0.5rem] mx-auto"
+                    :size="qrSettingsStore.qrSize[0]"
+                    :level="qrSettingsStore.qrErrorCorrection[0]"
+                    id="qr-code-canvas"
+                ></QrCodeVue>
+            </ErrorBoundary>
         </div>
         <div class="mt-[3rem]">
             <div class="flex items-center gap-[0.5rem] text-[14px] px-[1rem]">
@@ -118,7 +127,12 @@ const changeType = (type) => {
 
             </div>
             <div class="flex items-center gap-[1rem] justify-center px-[1rem] pb-[1rem]">
-                <DownloadButton @click.prevent="download()" />
+                <DownloadButton
+                    @click.prevent="download()"
+                    :class="{
+                        'cursor-not-allowed !bg-gray-200 !text-gray-300': qrError != null,
+                    }"
+                />
             </div>
         </div>
     </div>
