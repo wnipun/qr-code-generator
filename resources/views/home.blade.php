@@ -10,8 +10,8 @@
         class="text-center bg-white max-w-lg rounded-[8px] mt-[2rem] relative overflow-hidden"
     >
         <header class="text-left px-[1rem] pt-[1rem]">
-            <span class="font-semibold">QR Code Generator</span>
-            <h1 class="font-primary text-black-charcoal text-[12px] leading-6">Generate QR codes using this free online generator</h1>
+            <span class="font-semibold font-primary">QR Code Generator</span>
+            <h1 class="font-secondary text-black-charcoal text-[12px] leading-6">Generate QR codes using this free online generator</h1>
         </header>
 
         <the-qr-code-generator>
